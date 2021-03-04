@@ -15,17 +15,17 @@ import java.util.Scanner;
 
 public class Downloader {
 
-    private final String FILE_NAME="tmp.torrent";
+    private final String FILE_NAME = "tmp.torrent";
     private String url;
     private TorrentFile torrentFile;
 
-
-    public Downloader(String url){
-        this.url=url;
+    public Downloader(String url) {
+        this.url = url;
     }
+
     public void download() throws IOException {
         try (BufferedInputStream in = new BufferedInputStream(new URL(url).openStream());
-             FileOutputStream fileOutputStream = new FileOutputStream(FILE_NAME)) {
+                FileOutputStream fileOutputStream = new FileOutputStream(FILE_NAME)) {
             byte dataBuffer[] = new byte[1024];
             int bytesRead;
             while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
@@ -35,10 +35,11 @@ public class Downloader {
             e.printStackTrace();
         }
         File rawFile = new File(FILE_NAME);
-        torrentFile=new TorrentFile(rawFile);
+        torrentFile = new TorrentFile(rawFile);
         rawFile.delete();
     }
-    public TorrentFile getTorrentFile(){
+
+    public TorrentFile getTorrentFile() {
         return torrentFile;
     }
 }
