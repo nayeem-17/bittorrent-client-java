@@ -1,12 +1,12 @@
 torrent/libs/TorrentFile.java
  torrent.libs.TorrentFile
+torrent/libs/BEncodedDictionary.java
+ torrent.libs.BEncodedDictionary
+ torrent.libs.BEncodedDictionary$Entry
+torrent/libs/Decode.java
+ torrent.libs.Decode
+ torrent.libs.Decode$1
 torrent/Downloader.java
  torrent.Downloader
 main/Main.java
  main.Main
-torrent/libs/Decode.java
- torrent.libs.Decode
- torrent.libs.Decode$1
-torrent/libs/BEncodedDictionary.java
- torrent.libs.BEncodedDictionary
- torrent.libs.BEncodedDictionary$Entry
