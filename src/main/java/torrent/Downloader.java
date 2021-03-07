@@ -1,17 +1,12 @@
 package torrent;
 
-import com.dampcake.bencode.BencodeInputStream;
-import com.dampcake.bencode.Type;
-import torrent.libs.TorrentFile;
-
-import java.io.*;
-import java.net.MalformedURLException;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+
+import torrent.libs.TorrentFile;
 
 public class Downloader {
 
