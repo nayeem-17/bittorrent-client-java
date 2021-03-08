@@ -7,12 +7,18 @@ import java.util.Random;
 
 import main.util.HexConverter;
 import main.util.UdpClient;
+import main.util.UrlParser;
 
 // stackOF link of a problem regarding this file https://stackoverflow.com/questions/15184376/torrent-related-tracker-response-on-udp-protocol-update-3-working
 public class ConnectionRequest {
-    private static String magicConstant = "041727101980";
+    private String magicConstant = "041727101980";
+    public UrlParser urlParser;
 
-    public static Response getConnectionId() throws UnknownHostException, Exception {
+    public ConnectionRequest(String tracker) {
+        urlParser = new UrlParser(tracker);
+    }
+
+    public Response getUdpConnectionId() throws UnknownHostException, Exception {
         byte[] messagebuff = new byte[16];
         /**
          * initialing array's first two elememt with 0, because the output arraylength
@@ -41,8 +47,8 @@ public class ConnectionRequest {
 
         // need to extract tracker host,port from tracker url
 
-        String TRACKER = "tracker.opentrackr.org";
-        int PORT = 1337;
+        String TRACKER = urlParser.tracker;
+        int PORT = urlParser.port;
 
         UdpClient udpClient = new UdpClient();
         byte[] response = null;
@@ -68,7 +74,6 @@ public class ConnectionRequest {
 
     public static void main(String[] args) {
         try {
-            System.out.println(getConnectionId());
             /**
              * expexted output
              * 

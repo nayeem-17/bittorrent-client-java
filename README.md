@@ -42,13 +42,41 @@ Depending on the tracker protocol, we'll communicate with the tracker differentl
         |8|32-bit integer|action|0 (=connect)|
         |12|32-bit integer|transaction id|(randomly chosen)|
 
-    - **Connection Response**
+    - **Connection Response**   
     The response of the request message contains
         | Offset  |  Size        | Name        | Value       |
         |---------|--------------|-------------|-------------|
         | 0       |32-bit integer|action|0 (=connect)|
         |4|32-bit integer|transaction id|(chosen in request)|
         |8|64-bit integer|connection id|(chosen by tracker)|
+    - **Announce request**  
+    The connection response contains a new connection id which allows us to send to the tracker an announce request 
+        | Offset  |  Size        | Name        | Value       |
+        |---------|--------------|-------------|-------------|
+        |0|64-bit integer|connection id|(randomly chosen)|
+        |8|32-bit integer|action|1 (=announce)|
+        |12|32-bit integer|transaction id|0|
+        |16|20-byte integer|info hash|(.torrent info hash)|
+        |36|20-byte integer|peer id|(ID of the peer)|
+        |56|64-bit integer|downloaded|(bytes downloaded)|
+        |64|64-bit integer|left|(bytes left)|
+        |72|64-bit integer|uploaded|(bytes uploaded)|
+        |80|32-bit integer|event|0 (=default)|
+        |84|32-bit integer|IP address|0 (=default)|
+        |88|32-bit integer|key|(unique client key)|
+        |92|32-bit integer|number wanted|1 (=default)|
+        |96|16-bit integer|port|(port of the peer)|
+    - **Announce response** 
+        | Offset  |  Size        | Name        | Value       |
+        |---------|--------------|-------------|-------------|
+        0         |  32-bit integer | action |         1 // announce
+        4         |  32-bit integer | transaction_id|(chosen in request)
+        8         |  32-bit integer | interval| (waiting interval)
+        12        |  32-bit integer | leechers | (number of leecher)
+        16        |  32-bit integer | seeders |  (number of seeder)
+        20 + 6 * n|  32-bit integer | IP address|(list of IP addresses)
+        24 + 6 * n|  16-bit integer | TCP port|(List of port numbers)
+- ### Connecting to http / https tracker:
 
 # Useful links
 - ## [Bittorrent protocol](./Resources/bittorrentecon.pdf)
