@@ -12,7 +12,7 @@ public class Main {
         try {
             downloader.download();
             TorrentFile torrentFile = downloader.getTorrentFile();
-            System.out.println(torrentFile.getTracker());
+            System.out.println(torrentFile);
         } catch (IOException e) {
             e.printStackTrace();
         }

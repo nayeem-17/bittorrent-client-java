@@ -3,7 +3,7 @@ package main.tasks;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
-public class Response {
+public class CResponse {
     private int action;
     private int transictionId;
     private byte[] connectionId;
@@ -11,7 +11,7 @@ public class Response {
     /**
      * @return the action
      */
-    public Response(byte[] response) {
+    public CResponse(byte[] response) {
         this.connectionId = Arrays.copyOfRange(response, 8, 16);
         this.action = ByteBuffer.wrap(Arrays.copyOfRange(response, 0, 4)).getInt();
         this.transictionId = ByteBuffer.wrap(Arrays.copyOfRange(response, 4, 8)).getInt();

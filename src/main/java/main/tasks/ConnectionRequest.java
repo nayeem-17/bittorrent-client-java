@@ -12,13 +12,45 @@ import main.util.UrlParser;
 // stackOF link of a problem regarding this file https://stackoverflow.com/questions/15184376/torrent-related-tracker-response-on-udp-protocol-update-3-working
 public class ConnectionRequest {
     private String magicConstant = "041727101980";
-    public UrlParser urlParser;
+    public String tracker;
 
     public ConnectionRequest(String tracker) {
-        urlParser = new UrlParser(tracker);
+        this.tracker = tracker;
     }
 
-    public Response getUdpConnectionId() throws UnknownHostException, Exception {
+    public CResponse getUdpConnectionId() throws UnknownHostException, Exception {
+
+        byte[] messagebuff = makeConnectionMessage();
+
+        UrlParser urlParser = new UrlParser(tracker);
+        urlParser.parse();
+
+        String TRACKER = urlParser.host;
+        int PORT = urlParser.port;
+
+        UdpClient udpClient = new UdpClient();
+        byte[] response = null;
+
+        // Have to implement this, if failed to catch the data package
+
+        // for (int i = 1; i < 12; i++) {
+        // response = udpClient.sendMessage(InetAddress.getByName(TRACKER), messagebuff,
+        // PORT);
+        // if (response == null) {
+        // System.out.println("Failed to get data for " + i + " th time!!!");
+        // Thread.sleep(5000 * i);
+        // } else {
+        // break;
+        // }
+        // }
+
+        response = udpClient.sendMessage(InetAddress.getByName(TRACKER), messagebuff, PORT);
+
+        CResponse res = new CResponse(response);
+        return res;
+    }
+
+    private byte[] makeConnectionMessage() {
         byte[] messagebuff = new byte[16];
         /**
          * initialing array's first two elememt with 0, because the output arraylength
@@ -45,35 +77,13 @@ public class ConnectionRequest {
         random.nextBytes(transictionId);
         System.arraycopy(transictionId, 0, messagebuff, 12, transictionId.length);
 
-        // need to extract tracker host,port from tracker url
-
-        String TRACKER = urlParser.tracker;
-        int PORT = urlParser.port;
-
-        UdpClient udpClient = new UdpClient();
-        byte[] response = null;
-
-        // Have to implement this, if failed to catch the data package
-
-        // for (int i = 1; i < 12; i++) {
-        // response = udpClient.sendMessage(InetAddress.getByName(TRACKER), messagebuff,
-        // PORT);
-        // if (response == null) {
-        // System.out.println("Failed to get data for " + i + " th time!!!");
-        // Thread.sleep(5000 * i);
-        // } else {
-        // break;
-        // }
-        // }
-
-        response = udpClient.sendMessage(InetAddress.getByName(TRACKER), messagebuff, PORT);
-
-        Response res = new Response(response);
-        return res;
+        return messagebuff;
     }
 
     public static void main(String[] args) {
         try {
+            ConnectionRequest connectionRequest = new ConnectionRequest("udp://tracker.opentrackr.org:1337/announce");
+            System.out.println(connectionRequest.getUdpConnectionId());
             /**
              * expexted output
              * 

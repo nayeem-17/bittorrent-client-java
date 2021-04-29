@@ -53,9 +53,9 @@ Depending on the tracker protocol, we'll communicate with the tracker differentl
     The connection response contains a new connection id which allows us to send to the tracker an announce request 
         | Offset  |  Size        | Name        | Value       |
         |---------|--------------|-------------|-------------|
-        |0|64-bit integer|connection id|(randomly chosen)|
+        |0|64-bit integer|connection id|from connection response |
         |8|32-bit integer|action|1 (=announce)|
-        |12|32-bit integer|transaction id|0|
+        |12|32-bit integer|transaction id|(randomly chosen)|
         |16|20-byte integer|info hash|(.torrent info hash)|
         |36|20-byte integer|peer id|(ID of the peer)|
         |56|64-bit integer|downloaded|(bytes downloaded)|

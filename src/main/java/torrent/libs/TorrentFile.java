@@ -23,7 +23,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
-
 /**
  * The <code>TorrentFile</code> class is a representation of the information
  * stored within a <code>.torrent</code> file. Files can be set with the
@@ -74,15 +73,13 @@ public class TorrentFile {
     }
 
     /**
-     * Creates a new <code>Torrent</code> to analyze the provided torrent
-     * file.
+     * Creates a new <code>Torrent</code> to analyze the provided torrent file.
      *
-     * @param file
-     *            the torrent file
-     * @throws IllegalArgumentException
-     *             If <code>file</code> is <code>null</code> or a directory
-     * @throws IOException
-     *             If an I/O error occurs whilst analyzing the torrent file
+     * @param file the torrent file
+     * @throws IllegalArgumentException If <code>file</code> is <code>null</code> or
+     *                                  a directory
+     * @throws IOException              If an I/O error occurs whilst analyzing the
+     *                                  torrent file
      */
     public TorrentFile(File file) throws IllegalArgumentException, IOException {
         if (file == null) {
@@ -118,9 +115,9 @@ public class TorrentFile {
                 filenames[i] = buffer.toString();
             }
         } else {
-            lengths = new long[] {((Long) info.get("length")).longValue()}; //$NON-NLS-1$
+            lengths = new long[] { ((Long) info.get("length")).longValue() }; //$NON-NLS-1$
             total = lengths[0];
-            filenames = new String[] {(String) info.get("name")}; //$NON-NLS-1$
+            filenames = new String[] { (String) info.get("name") }; //$NON-NLS-1$
         }
         pieceLength = ((Long) info.get("piece length")).intValue(); //$NON-NLS-1$
         buffer = ByteBuffer.allocate(pieceLength);
@@ -180,19 +177,17 @@ public class TorrentFile {
 
     /**
      * Checks the integrity of the target file or folder as set by
-     * {@link #setTargetFile(File)} to determine whether its contents pass all
-     * of the hash checks.
+     * {@link #setTargetFile(File)} to determine whether its contents pass all of
+     * the hash checks.
      *
-     * @return <code>true</code> if and only if every hash check has been
-     *         passed, <code>false</code> otherwise
-     * @throws FileNotFoundException
-     *             If one of the files associated with the torrent could not be
-     *             found
-     * @throws IllegalStateException
-     *             If the target file has not been set yet with
-     *             {@link #setTargetFile(File)}
-     * @throws IOException
-     *             If an I/O error occurs while reading from the files
+     * @return <code>true</code> if and only if every hash check has been passed,
+     *         <code>false</code> otherwise
+     * @throws FileNotFoundException If one of the files associated with the torrent
+     *                               could not be found
+     * @throws IllegalStateException If the target file has not been set yet with
+     *                               {@link #setTargetFile(File)}
+     * @throws IOException           If an I/O error occurs while reading from the
+     *                               files
      */
     public boolean validate() throws IllegalStateException, IOException {
         if (file == null) {
@@ -202,34 +197,34 @@ public class TorrentFile {
     }
 
     /**
-     * Sets the target file or folder that this torrent should download to or
-     * look for the corresponding files in.
+     * Sets the target file or folder that this torrent should download to or look
+     * for the corresponding files in.
      *
-     * @param file
-     *            the target file or folder to use, this should be a file if the
-     *            torrent is a single file torrent or a folder if it has
-     *            multiple files
-     * @throws IllegalArgumentException
-     *             If <code>file</code> is null or if <code>file</code> is a
-     *             directory when this torrent is only using a single file
+     * @param file the target file or folder to use, this should be a file if the
+     *             torrent is a single file torrent or a folder if it has multiple
+     *             files
+     * @throws IllegalArgumentException If <code>file</code> is null or if
+     *                                  <code>file</code> is a directory when this
+     *                                  torrent is only using a single file
      */
     public void setTargetFile(File file) throws IllegalArgumentException {
         if (file == null) {
             throw new IllegalArgumentException("The file cannot be null"); //$NON-NLS-1$
         } else if (filenames.length == 1 && file.isDirectory()) {
-            throw new IllegalArgumentException("This torrent is downloading a file, the actual file should be set here and not a directory"); //$NON-NLS-1$
+            throw new IllegalArgumentException(
+                    "This torrent is downloading a file, the actual file should be set here and not a directory"); //$NON-NLS-1$
         }
         this.file = file;
     }
 
     /**
      * Returns the hash of the <code>info</code> dictionary specified by the
-     * torrent's metainfo. This is primarily used for torrent identification
-     * when sending messages to the tracker.
+     * torrent's metainfo. This is primarily used for torrent identification when
+     * sending messages to the tracker.
      *
-     * @return the hash of the <code>info</code> dictionary within the
-     *         torrent's metainfo, this will likely contain binary data and will
-     *         not be human-readable as a result
+     * @return the hash of the <code>info</code> dictionary within the torrent's
+     *         metainfo, this will likely contain binary data and will not be
+     *         human-readable as a result
      */
     public String getInfoHash() {
         return infoHash;
@@ -246,9 +241,9 @@ public class TorrentFile {
     }
 
     /**
-     * Retrieve the specified lengths of the files contained within this
-     * torrent. Every length contained within the returned array corresponds to
-     * a file's name specified by {@link #getFilenames()}.
+     * Retrieve the specified lengths of the files contained within this torrent.
+     * Every length contained within the returned array corresponds to a file's name
+     * specified by {@link #getFilenames()}.
      *
      * @return an array of lengths for each of the files specified within the
      *         torrent's metainfo
@@ -297,9 +292,8 @@ public class TorrentFile {
 
     /**
      * Retrieves the names of all of the files' that is specified by this
-     * <code>Torrent</code>. All of the files' lengths can be matched up
-     * against the long value stored within the returned array from
-     * {@link #getLengths()}.
+     * <code>Torrent</code>. All of the files' lengths can be matched up against the
+     * long value stored within the returned array from {@link #getLengths()}.
      *
      * @return an array of names for all of the files specified by the metadata
      */
@@ -312,8 +306,8 @@ public class TorrentFile {
      * before the ending <code>.torrent</code> extension. If no such extension
      * exists, the entire file's name will be returned.
      *
-     * @return the name of this torrent without the trailing
-     *         <code>.torrent</code> extension, if present
+     * @return the name of this torrent without the trailing <code>.torrent</code>
+     *         extension, if present
      */
     public String getName() {
         return name;
@@ -340,9 +334,9 @@ public class TorrentFile {
     }
 
     /**
-     * Retrieves the total length of all of the files specified within this
-     * torrent. This is equivalent to the sum of all the lengths returned from
-     * the array in {@link #getLengths()}.
+     * Retrieves the total length of all of the files specified within this torrent.
+     * This is equivalent to the sum of all the lengths returned from the array in
+     * {@link #getLengths()}.
      *
      * @return the combined length of all the files specified by this torrent
      */
@@ -354,10 +348,8 @@ public class TorrentFile {
      * Writes the contents of the file that was used to initialize this
      * <code>TorrentFile</code> onto the provided file.
      *
-     * @param file
-     *            the file to save to
-     * @throws IOException
-     *             If an I/O error occurs while trying to write to the file
+     * @param file the file to save to
+     * @throws IOException If an I/O error occurs while trying to write to the file
      */
     public void save(File file) throws IOException {
         final FileOutputStream fos = new FileOutputStream(file);
@@ -367,15 +359,16 @@ public class TorrentFile {
     }
 
     /**
-     * Returns whether this <code>TorrentFile</code> is equal to the given
-     * object. The two are the same if their info hash section of the contained
-     * metainfo is the same. If <code>other</code> is not an instance of a
+     * Returns whether this <code>TorrentFile</code> is equal to the given object.
+     * The two are the same if their info hash section of the contained metainfo is
+     * the same. If <code>other</code> is not an instance of a
      * <code>TorrentFile</code>, <code>false</code> is returned.
+     * 
      * @param other
      *
-     * @return <code>true</code> if <code>other</code> is a
-     *         <code>TorrentFile</code> and its info hash is the same as this
-     *         one, <code>false</code> otherwise
+     * @return <code>true</code> if <code>other</code> is a <code>TorrentFile</code>
+     *         and its info hash is the same as this one, <code>false</code>
+     *         otherwise
      */
     public boolean equals(Object other) {
         if (this == other) {
@@ -388,11 +381,11 @@ public class TorrentFile {
     }
 
     /**
-     * Returns the hash code of this <code>TorrentFile</code> based on its
-     * info hash.
+     * Returns the hash code of this <code>TorrentFile</code> based on its info
+     * hash.
      *
-     * @return the result of calling <code>hashCode()</code> on the returned
-     *         string from {@link #getInfoHash()}
+     * @return the result of calling <code>hashCode()</code> on the returned string
+     *         from {@link #getInfoHash()}
      */
     public int hashCode() {
         return infoHash.hashCode();
